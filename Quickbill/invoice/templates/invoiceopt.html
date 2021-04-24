@@ -1,0 +1,277 @@
+{% extends 'appbase.html' %}
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.3.0/paper.css">
+<style>
+    @media screen {
+        .A5 {
+            margin-left: 18%;
+            margin-right: 18%;
+            border: solid 0px;
+            height: 10%;
+        }
+
+        table {
+            border: solid 1px;
+            width: 100%
+        }
+
+        tfoot {
+            border-top: solid 1px;
+        }
+
+        tbody tr {
+            height: 40px;
+            min-height: 40px
+        }
+
+        td {
+            border-left: solid 1px;
+        }
+
+        th {
+            border: solid 1px;
+        }
+    }
+
+    @media print {
+        @page {
+            size: A5;
+            border: solid 0px;
+            margin-bottom: 15px;
+        }
+
+
+        .main_container {
+            width: 80%;
+            margin-left: 15px;
+
+        }
+
+        td {
+            border-left: solid 1px;
+        }
+
+        th {
+            border-left: solid 1px;
+            border-bottom: solid 1px;
+        }
+
+        table {
+            width: 100%;
+            border: solid 1px;
+        }
+
+        tbody tr {
+            height: 62px;
+            min-height: 62px
+        }
+
+        .tfoot {
+            height: 20px;
+            min-height: 20px
+        }
+
+        header {
+            display: none;
+        }
+
+        footer {
+            display: none;
+        }
+
+        #printPageButton {
+            display: none;
+        }
+
+        #show-sidebar {
+            display: none;
+        }
+    }
+
+</style>
+<!-- TOP PART -->
+        {% set page_length = 10 %}
+        {% set ps = namespace(prev_start = 0) %}
+        {% set pe = namespace(prev_end = 0)%}
+        {% for tab in tabs %}
+            {% if tab == tabs[0] and tab == tabs[-1] %}
+                {% set page_length = 10 %}
+            {% elif tab == tabs[0] %}
+                {% set page_length =14 %}
+            {% elif tab == tabs[-1] %}
+                {% set page_length = 12 %}
+            {% elif tab != tabs[0] and tab != tabs[-1] %}
+                {% set page_length = 13 %}
+            {% endif %}
+            {% set ps.prev_start = pe.prev_end  %}
+            {% set pe.prev_end = pe.prev_end + page_length %}
+            {% if tab == tabs[0] %}
+        <div class="A5" style="background-color: white;">
+            <div>
+                <h3 style="text-align: center;">PEI ESTIMATE {{date}}</h3>
+                <div class="row">
+                    <p class='col-4' style="text-align: left;"> &nbsp;Costumer: {{name}}</p>
+                    <h3 class='col-4' style="text-align: center;"> D.S.&nbsp;</h3>
+                    <p class='col-4' style="text-align: right;"> Dated: {{last_entry.date.strftime("%b-%d-%Y")}}&nbsp;</p>
+                </div>
+                <div style="text-align: left;"> &nbsp;Invoice No: {{last_entry.id}}</div>
+            </div>
+            <div>
+            {% endif %}
+            {% if tab != 0 %}
+            <br><br><br><br><br>
+            {% endif %}
+           
+        <table>
+            <thead>
+                <tr style="font-size:18px">
+                    <th class="text-center">N</th>
+                    <th class="text-center">Description of Goods</th>
+                    <th class="text-center">Alt. Quantity</th>
+                    <th class="text-center">Quantity</th>
+                    <th class="text-center">Rate</th>
+                    <th class="text-center">Per</th>
+                    <th class="text-center">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                {% for i in range(ps.prev_start,pe.prev_end) %}
+                {%  if i > item|length -1 %}
+                <tr style='border-bottom: solid 0 px; border-top:solid 0px '>
+                    <td class="text-center">&nbsp;</td>
+                    <td class="text-center">&nbsp;</td>
+                    <td class="text-center">&nbsp;</td>
+                    <td class="text-center">&nbsp;</td>
+                    <td class="text-center">&nbsp;</td>
+                    <td class="text-center">&nbsp;</td>
+                    <td class="text-center">&nbsp;</td>
+                </tr>
+                {% else %}
+                <tr style="border-bottom: solid 1px;">
+                    <td class="text-center" style='width:3%'>{{i+1}}</td>
+                    <td class="text-center">
+                        <h6 style="font-weight: bold;">{{item[i].upper()}}</h6>
+                        {% if ',' in description[i] %}
+                        <div>{{description[i]}}</div>
+                        {% endif %}
+                    </td>
+                    <td class="text-center" style='width:8%'>{{alternate_quantity[i]}}</td>
+                    <td class="text-center" style='width:12%'>{{quantity[i]}} {{per[i]}}</td>
+                    <td class="text-center" style='width:11%'>{{rate[i]}}</td>
+                    <td class="text-center" style='width:5%'>{{per[i]}}</td>
+                    <td class="text-center" style='width:12%'>{{amount[i]}}</td>
+        
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if tab == tabs[-1] %}
+        <table>
+            <tbody>
+                <tr style="border-top: solid 1px;" class='tfoot'>
+                    <td style='width:3%' ></td>
+                    <td class="text-center" style='width:49%'>Total</td>
+                    <td class="text-center" style='width:8.3%'>{{total_alternate_quantity}}</td>
+                    <td class="text-center" style='width:12%'>{{total_quantity}}</td>
+                    <td class="text-center" style='width:11%'></td>
+                    <td class="text-center" style="border-left: solid 0px;" style='width:5%'></td>
+                    <td id='total_amount' class="text-center" style='width:12%'>{{total_amount}}</td>
+                </tr>
+                <tr style="border-top: solid 1px;" class='tfoot'>
+                    <td></td>
+                    <td class="text-center" style="border-left: solid 0px;"></td>
+                    <td class="text-center" style="border-left: solid 0px;"></td>
+                    <td class="text-center" style="border-left: solid 0px;"></td>
+                    <td class="text-center" style="border-left: solid 1px; border-top: solid 1px;">Paid</td>
+                    <td class="text-center" style="border-left: solid 0px;; border-top: solid 1px;"></td>
+                    <td class="text-center" style="border-top: solid 1px;">{{paid_amount}}</td>
+                </tr>
+                <tr style="border-top: solid 0px;" class='tfoot'>
+                    <td></td>
+                    <td class="text-center" style="border-left: solid 0px ;"></td>
+                    <td class="text-center" style="border-left: solid 0px;"></td>
+                    <td class="text-center" style="border-left: solid 0px;"></td>
+                    <td class="text-center" style="border-left: solid 1px; border-top: solid 1px;">Discount</td>
+                    <td class="text-center" style="border-left: solid 0px;; border-top: solid 1px;"></td>
+                    <td class="text-center" style="border-top: solid 1px;">{{discount}}</td>
+                </tr>
+                <tr style="border-top: solid 0px;" class='tfoot'>
+                    <td></td>
+                    <td class="text-center" style="border-left: solid 0px;"></td>
+                    <td class="text-center" style="border-left: solid 0px;"></td>
+                    <td class="text-center" style="border-left: solid 0px;"></td>
+                    <td class="text-center" style="border-left: solid 1px; border-top: solid 1px;">Remaning</td>
+                    <td class="text-center" style="border-left: solid 0px;; border-top: solid 1px;"></td>
+                    <td class="text-center" style="border-top: solid 1px;">{{total_amount-paid_amount-discount}}</td>
+                </tr>
+            </tbody>
+            
+        </table>
+       
+        <div>
+            <div>Amount in changeable(in words)</div>
+            <div id="words" style='font-size:18px; font-weight: bold;'></div>
+        </div>
+        
+        
+        <div>
+            <div style="font-weight: bold;"><u>Declaration:</u></div>
+        
+            <div>We declare that this invoice shows the actual price of the goods described and that
+                all particulars are true and &nbsp;correct.</div>
+        </div>
+        
+        <div style="text-align: right;text-decoration: overline;"><br>&nbsp; Authorized Signature &nbsp; </div>
+        
+        
+    </div>
+</div>
+        {% endif %}
+        {% endfor %}
+
+
+<footer>
+    <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
+        <button class="btn btn-primary" onclick=window.print()>Print</button>
+        <div class="col-11"></div>
+        <button class="btn btn-primary">Save</button>
+    </nav>
+</footer>
+<script>
+    $(document).ready(function () {
+        var a = ['', 'One ', 'Two ', 'Three ', 'Four ', 'Five ', 'Six ', 'Seven ', 'Eight ', 'Nine ', 'Ten ',
+            'Eleven ', 'Twelve ', 'Thirteen ', 'Fourteen ', 'Fifteen ', 'Sixteen ', 'Seventeen ',
+            'Eighteen ', 'Nineteen '
+        ];
+        var b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+        function inWords(num) {
+            if ((num = num.toString()).length > 9) return 'overflow';
+            n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+            if (!n) return;
+            var str = '';
+            str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
+            str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
+            str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
+            str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
+            str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][
+                1
+            ]]) + 'only ' : '';
+            return str;
+        }
+        document.getElementById('words').innerHTML = ' Nepalese Rupee ' + inWords(document.getElementById(
+            'total_amount').textContent);
+
+    })
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        template =
+    })
+
+</script>
+{% endblock %}

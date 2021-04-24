@@ -1,0 +1,95 @@
+{% extends "appbase.html"%}
+{% block content %}
+<div class="card-body ">
+  <div class="container">
+    <div id="wrapper">
+      <h1 class="text-center">Clients</h1>
+
+      <table id="table" class="display table table-striped table-bordered compact table-sm" style="width:80%">
+        <thead class="thead-dark">
+          <tr>
+            <th>Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Company Name</th>
+            <th>Primary Phone</th>
+            <th>Secondary Phone</th>
+            <th>Address</th>
+            <th>Pan No</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in items %}
+          <tr>
+            <th scope="row">{{ i.id }}</th>
+            <td class="text-center">{{i.firstname}}</td>
+            <td class="text-center">{{i.lastname}}</td>
+            <td class="text-center"><a
+              href="{{ url_for('application.profile',costumer_name=i.companyname) }}">{{i.companyname}}</a></td>
+            <td class="text-center">{{i.primary_no}}</td>
+            <td class="text-center">{{i.secondary_no}}</td>
+            <td class="text-center">{{i.address}}</td>
+            <td class="text-center">{{i.pan_no}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap5.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('#table').DataTable({
+      "pagingType": "simple",
+      "footerCallback": function (row, data, start, end, display) {
+        var api = this.api(),
+          data;
+
+        // Remove the formatting to get integer data for summation
+        var intVal = function (i) {
+          return typeof i === 'string' ?
+            i.replace(/[\$,]/g, '') * 1 :
+            typeof i === 'number' ?
+            i : 0;
+        };
+
+        // Total over all pages
+        total = api
+          .column(6)
+          .data()
+          .reduce(function (a, b) {
+            return intVal(a) + intVal(b);
+          }, 0);
+
+        // Total over this page
+        pageTotal = api
+          .column(6, {
+            page: 'current'
+          })
+          .data()
+          .reduce(function (a, b) {
+            return intVal(a) + intVal(b);
+          }, 0);
+
+        // Update footer
+        $(api.column(4).footer()).html(
+          'Total Amount: ' + pageTotal
+        );
+      }
+    });
+  });
+
+</script>
+<style>
+  th {
+    white-space: nowrap;
+  }
+
+</style>
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js"></script>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "appbase.html" %}
+{% block content %}
+
+<style>
+    @media print {
+        @page {
+            size: A4;
+            border: solid 0px;
+            margin-top: 10px;
+        }
+        header {
+            display: none;
+        }
+
+        footer {
+            display: none;
+        }
+        #printPageButton {
+            display: none;
+        }
+
+        #show-sidebar {
+            display: none;
+        }
+    }
+</style>
+
+<div class="card-body">
+    <div class="row">
+        <div class="col-6">
+            <h3 style="text-align: left;">Darshan Store</h3>
+            <p>Statement To: Costumer</p>
+        </div>
+       <div class="col-6">
+            <h2 style="text-align: right;color: rgb(143, 173, 218);">STATEMENT</h2>
+            <p style="text-align: right;">Statement Date: 2021/03/09</p>
+       </div>
+    </div>
+    
+    <h4>Account Activity</h4>
+    <p>From: 2020/11/21 To: 2021/03/09</p>
+    <table class="table table-sm ">
+        <thead class="bg-dark text-white">
+            <tr>
+                <th class="text-center">Id</th>
+                <th class="text-center">Date</th>
+                <th class="text-center">Type</th>
+                <th class="text-center">Amount</th>
+                <th class="text-center">Payment</th>
+                <th class="text-center">Remaning</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in range(10) %}
+            <tr>
+                <td class="text-center">{{i}}</td>
+                <td class="text-center">2020/11/21</td>
+                <td class="text-center">Invoice</td>
+                <td class="text-center">10000</td>
+                <td class="text-center">1000</td>
+                <td class="text-center" style="background-color: rgb(238, 238, 238);">9000</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot style="background-color: rgb(238, 238, 238);">
+            <tr>
+                <td style="border-left: 0px;"></td>
+                <td style="border-left: 0px;"></td>
+                <td style="border-left: 0px;"></td>
+                <td style="border-left: 0px;"></td>
+                <td  class="text-center">Current Due</td>
+                <td  class="text-center">9000</td>
+            </tr>
+        </tfoot>
+    </table>
+    <br>
+    <div class="text-center">
+        <h3 style="font-style: italic;">Thank You For Your Business</h3>
+    </div>
+</div>
+{% endblock %}

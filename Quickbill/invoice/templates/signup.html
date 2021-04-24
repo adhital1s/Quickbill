@@ -1,0 +1,45 @@
+            {% extends "appbase.html" %}
+            {% block content %}
+            <div class="image" style="background: url('../static/images/background/pexels-johannes-plenio-1103970.jpg')"></div>
+            <div class="board-signup" >
+                <div class="jumbotron" style="padding-top: 25px; padding-bottom: 25px;">
+                    <h2 class="text-center text-info">Sign Up</h2>
+                    <p class="text-center ">Register New User</p>
+                    <form method="POST" class="form-signin">
+                        <div class="container">
+                            {{form.hidden_tag()}}
+                            <div class="row">
+                            <div class="form-group col-6">
+                                {{form.firstname.label}}{{form.firstname(class='form-control reg_name',placeholder='First Name')}}
+                            </div>
+                            <div class="form-group col-6">
+                                {{form.lastname.label}}{{form.lastname(class='form-control  reg_name',placeholder='Last Name')}}
+                            </div>
+                        </div>
+                            <div class="form-group">
+                                {{form.username.label}} {{form.username( class="form-control mb-4",placeholder="Username")}}
+                            </div>
+                            <div class="form-group">
+                                {{form.password.label}}{{form.password(class='form-control ', type="password", placeholder="Password")}}
+                            </div>
+                            <div class="form-group">
+                                {{form.confirm_password.label}}{{form.confirm_password(class='form-control', type="password", placeholder="Confirm Password")}}
+                            </div>
+                            <br>
+                            {{form.signup(class="btn btn-lg btn-primary btn-block")}}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <style>
+        .form-signin {
+            width: 100%;
+            max-width: 530px;
+            padding: 15px;
+            margin: 0 auto;
+        }
+        </style>
+        {% endblock %}
+    </body>
+</html>

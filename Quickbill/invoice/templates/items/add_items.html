@@ -1,0 +1,44 @@
+{% extends "appbase.html"%}
+{% block content %}
+<body style="background-color:rgb(174, 197, 206);" >
+
+    <div class="container"> 
+        <div class="jumbotron">
+            <h1 class="text-center", style="text-decoration-color: lightseagreen;">Items</h1>
+            
+            
+                <form method="POST" class="form-group">
+                    {{form.hidden_tag()}}
+                    <div class="row">
+                    <div class="form-group col-4  ">
+                        {{form.item_name.label}}{{form.item_name(class='form-control input-group-ig ',placeholder='Name')}}
+                    </div>
+                    <div class="form-group col-4 ">
+                        {{form.item_brand.label}}{{form.item_brand(class='form-control input-group-ig ')}}
+                    </div>
+                    
+                    
+                    <div class="form-group col-4  ">
+                        {{form.item_category.label}}{{form.item_category(class='form-control input-group-ig ')}}
+                    </div>
+                </div>
+                    <div class="row">
+                    <div class="form-group col-5  ">
+                        {{form.item_price.label}}{{form.item_price(class='form-control input-group-ig ')}}
+                    </div>
+
+                    <div class="form-group col-5  ">
+                        {{form.item_quantity.label}}{{form.item_quantity(class='form-control input-group-ig')}}
+                    </div>
+                    </div>
+                    {{form.submit(class='btn btn-primary text-left')}}
+                </form>
+                
+        </div>
+    </div>
+
+</body>
+
+
+
+{% endblock %}

@@ -1,0 +1,224 @@
+{% extends "appbase.html" %}
+{% block content %}
+<h1>Dashboard</h1>
+<form method="POST">
+    <div class="btn-toolbar mb-2 mb-md-0">
+
+        <!-- <div class="btn-group mr-2">
+            <button class="btn btn-sm btn-outline-secondary">Share</button>
+            <button class="btn btn-sm btn-outline-secondary">Export</button>
+        </div> -->
+        <div class="btn-group mr-2">
+            {{form.today(class="btn btn-sm btn-outline-primary dropdown-toggle")}}
+            {{form.yesterday(class="btn btn-sm btn-outline-primary dropdown-toggle")}}
+
+        </div>
+        <div class="btn-group mr-2">
+            {{form.this_week(class="btn btn-sm btn-outline-primary dropdown-toggle")}}
+            {{form.last_week(class="btn btn-sm btn-outline-primary dropdown-toggle")}}
+
+        </div>
+
+        <li class="nav-item dropdown">
+            <a class="btn btn-sm btn-outline-secondary dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Months
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                {{form.this_month(class="btn btn-sm dropdown-item")}}
+                {{form.january(class=" btn btn-sm dropdown-item")}}
+                {{form.february(class="btn btn-sm  dropdown-item")}}
+                {{form.march(class="btn btn-sm  dropdown-item")}}
+                {{form.april(class="btn btn-sm  dropdown-item")}}
+                {{form.may(class="btn btn-sm  dropdown-item")}}
+                {{form.june(class="btn btn-sm  dropdown-item")}}
+                {{form.july(class="btn btn-sm  dropdown-item")}}
+                {{form.august(class="btn btn-sm  dropdown-item")}}
+                {{form.september(class="btn btn-sm  dropdown-item")}}
+                {{form.october(class="btn btn-sm  dropdown-item")}}
+                {{form.november(class="btn btn-sm  dropdown-item")}}
+                {{form.december(class="btn btn-sm  dropdown-item")}}
+            </div>
+        </li>
+    </div>
+</form>
+<br>
+<div class="row">
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-primary text-white mb-4 ">
+            <div class="card-body">Total Sales Amount</div>
+            <h4 class='text-center'>{{smonth_total}}</h4>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-white stretched-link" href="#">View Details</a>
+                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-warning text-white mb-4">
+            <div class="card-body">Remaning Sales Amount </div>
+            <h4 class='text-center'>{{smonth_remain}}</h4>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-white stretched-link" href="#">View Details</a>
+                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-success text-white mb-4">
+            <div class="card-body">Total Purchase</div>
+            <h4 class='text-center'>{{pmonth_total}}</h4>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-white stretched-link" href="#">View Details</a>
+                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-danger text-white mb-4">
+            <div class="card-body">Remaning Purchase Amount </div>
+            <h4 class='text-center'>{{pmonth_remain}}</h4>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-white stretched-link" href="#">View Details</a>
+                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row ">
+    <div class="container col-6 mb-6 rounded-left" style="background-color: rgb(1, 14, 32);">
+        <h3 style="color: white;">Sales on {{month_name}}</h3>
+        <canvas class="my-4" id="chart-line" width="900" height="580"></canvas>
+    </div>
+    <div class="container col-6 mb-6 rounded-right " style="background-color: rgb(68, 4, 4);">
+        <h3 style="color: white;">Purchases on {{month_name}}</h3>
+        <canvas class="my-4" id="chart-bar" width="900" height="580"></canvas>
+    </div>
+</div>
+
+{{s_top}}
+<h2>Top Sales</h2>
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th data-sortable="true" class="text-center" scope="col">Id</th>
+                <th data-sortable="true" class="text-center" scope="col">Date</th>
+                <th class="text-center" scope="col">Costumer Name</th>
+                <th data-sortable="true" class="text-center" scope="col">Total Amount</th>
+                <th data-sortable="true" class="text-center" scope="col">Paid Amount</th>
+                <th data-sortable="true" class="text-center" scope="col">Remaning Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in sitems[:5] %}
+            <tr>
+
+                <th scope="row"><a href="{{ url_for('application.voucher_id',id=i.id) }}">{{ i.id }}</a></th>
+                <td class="text-center">{{ i.date.strftime('%Y- %m- %d')}}</td>
+                <td class="text-center"><a
+                        href="{{ url_for('application.profile',costumer_name=i.name) }}">{{i.name}}</a></td>
+                <td class="text-center">{{i.total_amount}}</td>
+                <td class="text-center">{{i.paid_amount}}</td>
+                <td class="text-center">{{i.remaning_amount}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<h2>Top Purchases</h2>
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th data-sortable="true" class="text-center" scope="col">Id</th>
+                <th data-sortable="true" class="text-center" scope="col">Date</th>
+                <th class="text-center" scope="col">Seller Name</th>
+                <th data-sortable="true" class="text-center" scope="col">Total Amount</th>
+                <th data-sortable="true" class="text-center" scope="col">Paid Amount</th>
+                <th data-sortable="true" class="text-center" scope="col">Remaning Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in pitems[:5] %}
+            <tr>
+
+                <th scope="row"><a href="{{ url_for('application.voucher_id',id=i.id) }}">{{ i.id }}</a></th>
+                <td class="text-center">{{ i.date.strftime('%Y- %m- %d')}}</td>
+                <td class="text-center"><a
+                        href="{{ url_for('application.sellerprofile',seller_name=i.name) }}">{{i.name}}</a></td>
+                <td class="text-center">{{i.total_amount}}</td>
+                <td class="text-center">{{i.paid_amount}}</td>
+                <td class="text-center">{{i.remaning_amount}}</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+    <!-- Graphs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var ctx = $("#chart-line");
+            var myLineChart = new Chart(ctx, {
+                type: 'line',
+                 data: {
+                    labels: {{labels}},
+                    datasets: [{
+                        data: {{s_totaldata}},
+                        label: "Total Amount",
+                        borderColor: "#458af7",
+                        backgroundColor: '#458af7',
+                        fill: false
+                    },{
+                          data: {{s_remaindata}},
+                          label: "Remaining Amount",
+                          borderColor: "orange",
+                          backgroundColor: 'orange',
+                          fill: false
+                      } ]
+                },
+                options: {
+                    title: {
+                        display: false,
+                        text: 'Total Amount And Remaning Amount'
+                    }
+                }
+            });
+        });
+      </script>
+      <script>
+          $(document).ready(function() {
+              var ctx = $("#chart-bar");
+              var myLineChart = new Chart(ctx, {
+                  type: 'bar',
+                  data: {
+                      labels: {{labels}},
+                      datasets: [{
+                          data: {{p_totaldata}},
+                          label: "Total Amount",
+                          borderColor: "#458af7",
+                          backgroundColor: '#458af7',
+                          fill: false
+                      }, {
+                          data: {{p_remaindata}},
+                          label: "Remaining Amount",
+                          borderColor: "orange",
+                          backgroundColor: 'orange',
+                          fill: false
+                      },]
+                  },
+                  options: {
+                      title: {
+                          display: false,
+                          text: 'Total Amount And Remaning Amount'
+                      }
+                  }
+              });
+          });
+      </script>
+
+    {% endblock %}

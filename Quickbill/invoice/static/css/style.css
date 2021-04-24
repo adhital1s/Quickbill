@@ -1,0 +1,124 @@
+body {
+  font-family: Roboto, "arial";
+  margin: 0;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+}
+.header {
+  background:  rgb(22, 47, 51);
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  transition: background-color 0.5s ease;
+}
+.header.active {
+  background: rgba(22, 47, 51, 0.425);
+}
+.logo {
+    display: inline-block;
+    font-size: 23px;
+    color: white;
+    padding: 0px;
+    font-family: anton;
+  }
+
+.icon {
+    font-size: 42px;
+    color: rgb(253, 253, 253);
+    font-family: 'Rye';
+  }
+
+  header .fa-bars {
+    font-size: 30px;
+    padding: 15px;
+    color: rgb(248, 248, 248);
+  }
+  header li{
+    display:inline-block;
+    
+  }
+  header li a{
+    color: white;
+    font-size: 15px;
+    align-items: right;
+  }
+  .image {
+    height: 100vh;
+    width: 100%;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    background-position: center top !important;
+  }
+
+  .board {
+    position: absolute;
+    top: 35%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+  }
+  .board-image {
+    position: absolute;
+    top: 75%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+    height: 70vh;
+    width: 400px;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    background-position: center top !important;
+  }
+  .board-login {
+    position: absolute;
+    top: 55%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+    height: 70vh;
+    width: 400px;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    background-position: center top !important;
+  }
+  .board-signup {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 50vh;
+    width: 60%;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    background-position: center top !important;
+  }
+  .tag {
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    padding: 10px 30px;
+    font-size: 30px;
+    text-align: center;
+    background:rgb(22, 47, 51);
+    width:400px;
+    border-radius: 10%;
+  }
+  .tag-small {
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    padding: 10px 30px;
+    font-size: 19px;
+    text-align: center;
+    width:400px;
+  }
+
+.footer-logo{
+  background: transparent;
+  z-index: 999;
+  display: inline-block;
+  position: relative;
+}
+
+.main_container{
+  padding-left: 20px;
+  padding-right: 5px;
+}
